@@ -1,0 +1,43 @@
+{
+    "default_profile": "default_llm",
+
+    "profiles": {
+        "default_llm": {
+            "provider": "groq",
+            "model": "qwen/qwen3-32b",
+            "temperature": 0
+        },
+        "fast_low_cost_llm": {
+            "provider": "groq",
+            "model": "qwen/qwen3-32b",
+            "temperature": 0
+        },
+        "high_accuracy_llm":
+        {
+            "provider": "groq",
+            "model": "qwen/qwen3-32b",
+            "temperature": 0
+        },
+        "local_private_llm":
+        {
+            "provider": "groq",
+            "model": "qwen/qwen3-32b",
+            "temperature": 0
+        }
+    },
+
+    "agent_profiles": {
+        "classification_agent": {
+            "profile": "fast_low_cost_llm"
+        },
+        "security_agent": {
+            "profile": "local_private_llm"
+        },
+        "task_extraction_agent": {
+            "profile": "high_accuracy_llm"
+        }
+    }
+}
+
+
+

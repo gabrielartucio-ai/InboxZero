@@ -1,0 +1,46 @@
+# ==========================
+# Entorno virtual
+# ==========================
+env/
+.venv/
+venv/
+
+# ==========================
+# Variables de entorno
+# ==========================
+.env
+
+# ==========================
+# Logs
+# ==========================
+logs/
+*.log
+
+# ==========================
+# Caché de Python
+# ==========================
+__pycache__/
+*.py[cod]
+*$py.class
+
+# ==========================
+# Archivos de VS Code
+# ==========================
+.vscode/
+
+# ==========================
+# Archivos temporales
+# ==========================
+*.tmp
+*.bak
+*.swp
+
+# ==========================
+# Distribución
+# ==========================
+build/
+dist/
+*.egg-info/
+
+# Transitorio hasta eliminar el archivo
+Contraseña para la base de datos supabase Inbox Zero.docx
