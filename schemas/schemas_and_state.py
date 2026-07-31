@@ -188,6 +188,36 @@ class CleanMail(BaseModel):
         "preprocesamiento."
     )
 
+class MailClassification(BaseModel):
+    category: MailCategory = Field(
+        description="Seleccionar estrictamente una de las 13 categorías " \
+        "predefinidas que mejor describa la naturaleza del correo."
+    )
+    priority: RiskLevel = Field(
+        description="Prioridad operativa del correo (Baja, Media, Alta) basada en el impacto " \
+        "que tendría para el usuario o la organización resolver o no resolver " \
+        "este correo." 
+    )
+    urgency: RiskLevel = Field(
+        description="Urgencia del correo (Baja, Media, Alta) basada en el tiempo que el " \
+        "usuario tiene que actuar" 
+    )
+    summary: str = Field(
+        description="Resumen ejecutivo compacto del correo en un máximo de dos oraciones. " \
+        "Tono directo y neutral."
+    )
+    requires_action: bool = Field(
+        description="Indica si el correo requiere alguna accion por parte del usuario"
+    )
+    classification_confidence: RiskLevel = Field(
+        description="Nivel de confianza del agente en la clasificación realizada. Expresa el " \
+        "grado de certeza con que considera correcta la categoría y los atributos asignados " \
+        "al correo. Es una autoevaluacion realizada por el llm"
+    )
+    reasoning: str = Field(
+        description="Breve justificación de la clasificación realizada."
+    )
+
 class SecurityAnalysis(BaseModel):
     is_suspicious: bool = Field(
         description="Establecer en True si el correo muestra patrones claros de phishing, " \
@@ -199,20 +229,6 @@ class SecurityAnalysis(BaseModel):
     justification: str = Field(
         description="Explicación detallada de los factores semánticos o técnicos que determinaron " \
         "el nivel de riesgo."
-    )
-
-class MailClassification(BaseModel):
-    category: MailCategory = Field(
-        description="Seleccionar estrictamente una de las 13 categorías predefinidas que mejor " \
-        "describa la naturaleza del correo."
-    )
-    priority: RiskLevel = Field(
-        description="Prioridad operativa del correo (Bajo, Medio, Alto) basada en la urgencia de " \
-        "los plazos o relevancia del emisor."
-    )
-    summary: str = Field(
-        description="Resumen ejecutivo compacto del correo en un máximo de dos oraciones. " \
-        "Tono directo y neutral."
     )
 
 class TaskItem(BaseModel):

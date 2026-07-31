@@ -2,6 +2,7 @@ from config.config_app import ConfigApp
 from connectors.exchange_service import ExchangeService
 from services.logging_service import LoggingService
 from services.preprocessor_service import PreprocessorService
+from agents.classification.classification_agent import ClassificationAgent
 
 LoggingService.configure()
 
@@ -17,11 +18,6 @@ for email in recent_emails:
     clean_emails_list.append(clean_email.clean_rawmail()) 
 
 for email in clean_emails_list:
-    print(email.sender_name)
-    print(email.received_at)
-    print(email.sender_address)
-    print(email.subject)
-    print(f"cuerpo del mensaje:\n {email.body_clean}")
-    print(f"historial:\n {email.quoted_history_clean}")
-    print(f"lenguaje:\n {email.language}")
-    print(f"Firma: \n {email.signature}")
+    clasificador = ClassificationAgent()
+    mail_clasificado = clasificador.email_classificator(email)
+    print(type(mail_clasificado))

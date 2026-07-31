@@ -2,11 +2,13 @@ from langchain.chat_models import init_chat_model
 import logging
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_not_exception_type
 from pydantic import BaseModel, ValidationError
-from typing import Type, Any
+from typing import Type, TypeVar, Any
 from config.config_app import ConfigApp
 
 logging.basicConfig(level=logging.ERROR)
 logger = logging.getLogger(__name__)
+
+TBaseModel = TypeVar("TBaseModel", bound=BaseModel)
 
 class LLMGateway:
     """
@@ -19,12 +21,11 @@ class LLMGateway:
     """
     
     def __init__(self, agent_id: str | None = None):
-        self.config = ConfigApp(password="contraseña temporal")
-        llm_profile = self._resolve_model_profile(agent_id=agent_id)
+        self.llm_profile = self._resolve_model_profile(agent_id=agent_id)
         self._base_model = init_chat_model(
-            model = llm_profile["model"],
-            model_provider = llm_profile["provider"],
-            temperature = llm_profile["temperature"]
+            model = self.llm_profile["model"],
+            model_provider = self.llm_profile["provider"],
+            temperature = self.llm_profile["temperature"]
         )
 
     def _resolve_model_profile(self, agent_id: str | None)  -> dict[str, Any]:
@@ -45,12 +46,12 @@ class LLMGateway:
     
     def request_structured_output(self,
                                 system_prompt: str, 
-                                raw_mail_text: str,
-                                output_schema: Type[BaseModel]):
+                                input_text: str,
+                                output_schema: Type[TBaseModel]) -> TBaseModel:
         structured_model = self._base_model.with_structured_output(output_schema)
         message = [
                 {"role": "system", "content": system_prompt},
-                {"role": "user", "content": raw_mail_text}
+                {"role": "user", "content": input_text}
         ]
         try:
             result = self.llm_calling(structured_model, message)
@@ -78,7 +79,7 @@ class LLMGateway:
     )
     def llm_calling(self, 
                     structured_model,
-                    message: list[dict]) -> Any:
+                    message: list[dict]) -> TBaseModel:
         model_result = structured_model.invoke(message)
         return model_result 
 
