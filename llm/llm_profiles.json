@@ -4,24 +4,24 @@
     "profiles": {
         "default_llm": {
             "provider": "groq",
-            "model": "qwen/qwen3-32b",
+            "model": "openai/gpt-oss-120b",
             "temperature": 0
         },
         "fast_low_cost_llm": {
             "provider": "groq",
-            "model": "qwen/qwen3-32b",
+            "model": "openai/gpt-oss-120b",
             "temperature": 0
         },
         "high_accuracy_llm":
         {
             "provider": "groq",
-            "model": "qwen/qwen3-32b",
+            "model": "openai/gpt-oss-120b",
             "temperature": 0
         },
         "local_private_llm":
         {
             "provider": "groq",
-            "model": "qwen/qwen3-32b",
+            "model": "openai/gpt-oss-120b",
             "temperature": 0
         }
     },

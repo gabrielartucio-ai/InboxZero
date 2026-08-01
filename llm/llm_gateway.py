@@ -20,7 +20,8 @@ class LLMGateway:
     esquemas Pydantic.
     """
     
-    def __init__(self, agent_id: str | None = None):
+    def __init__(self, config: ConfigApp, agent_id: str | None = None):
+        self.config = config
         self.llm_profile = self._resolve_model_profile(agent_id=agent_id)
         self._base_model = init_chat_model(
             model = self.llm_profile["model"],

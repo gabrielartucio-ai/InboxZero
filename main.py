@@ -18,6 +18,6 @@ for email in recent_emails:
     clean_emails_list.append(clean_email.clean_rawmail()) 
 
 for email in clean_emails_list:
-    clasificador = ClassificationAgent()
+    clasificador = ClassificationAgent(config)
     mail_clasificado = clasificador.email_classificator(email)
     print(type(mail_clasificado))
