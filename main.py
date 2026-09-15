@@ -20,4 +20,4 @@ for email in recent_emails:
 for email in clean_emails_list:
     clasificador = ClassificationAgent(config)
     mail_clasificado = clasificador.email_classificator(email)
-    print(type(mail_clasificado))
+#    print(type(mail_clasificado))

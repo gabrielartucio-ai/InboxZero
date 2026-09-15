@@ -236,20 +236,33 @@ class TaskItem(BaseModel):
         description="Identificador correlativo temporal generado por el modelo para la tarea "
         "(ej. task_1, task_2)."
     )
-    description: str = Field(
+    task_title: str = Field(
+        description="Título corto (una línea) para mostrar en un checklist visual."
+    )
+    task_description: str = Field(
         description="Descripción clara, accionable y concisa de la tarea o compromiso identificado " \
         "en el texto."
     )
-    due_date: Optional[str] = Field(
-        default=None,
-        description="Fecha límite explícita o inferida textualmente en el correo (formato YYYY-MM-DD). Si no se menciona, dejar en None."
-    )
-    assigned_to: str = Field(
+    task_assigned_to: str = Field(
         description="Persona encargada de ejecutar la acción. Si está dirigido explícitamente " \
         "al dueño del buzón, indicar 'Usuario'."
     )
+    task_due_date: Optional[str] = Field(
+        default=None,
+        description="Fecha límite explícita o inferida textualmente en el correo (formato YYYY-MM-DD). Si no se menciona, dejar en None."
+    )
+    task_requires_response: str = Field(
+        description="Indica si la tarea implica responder un correo."
+    )
+    task_reasoning: str = Field(
+        description="El LLM justifica brevemente por qué determinó que es una tarea."
+    )
 
 class TaskExtraction(BaseModel):
+    has_task: bool = Field(
+        "Indicador de si se encontraron tareas. True si se encontraron tareas, " \
+        "False en caso contrario"
+    )
     tasks: List[TaskItem] = Field(
         description="Lista de compromisos o acciones concretas extraídas del correo electrónico. " \
         "Si no hay tareas, devolver lista vacía."
