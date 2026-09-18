@@ -14,7 +14,7 @@ from datetime import datetime
 # 1. RESTRICCIONES CATEGÓRICAS (ENUMS)
 # ==========================================
 
-class MailCategory(Enum):
+class MailCategory(str, Enum):
     ACTION_REQUIRED = "Accion requerida"
     INFORMATION = "Informacion"
     FOLLOW_UP = "Seguimiento"
@@ -29,22 +29,33 @@ class MailCategory(Enum):
     PERSONNEL = "Personal"
     SPAM = "Spam"
 
-class RiskLevel(Enum):
+class RiskLevel(str, Enum):
     LOW = "Bajo"
     MEDIUM = "Medio"
     HIGH = "Alto" 
 
-class DecisionRegistry(Enum):
+class DecisionRegistry(str, Enum):
     APPROVED = "Aprobado"
     REJECTED = "Rechazado"
     CORRECTED = "Corregido"
     PENDING = "Pendiente"
 
-class FinalStatusOptions(Enum):
+class FinalStatusOptions(str, Enum):
     PROCESSED = "Procesado" 
     ARCHIVED = "Archivado" 
     MANUAL_ACTION_REQIRED = "Accion manual requerida"
     SPAM_ISOLATED = "Spam aislado"
+
+class ThreatType(str, Enum):
+    SPAM = "Correo basura o no deseado"
+    PHISHING = "Phishing"
+    IMPERSONATION = "Suplantacion de identidad"
+    CREDENTIAL_HARVESTING = "Pedido de credenciales o claves"
+    PAYMENT_FRAUD = "Fraude de pago o cambio de cuenta bancaria"
+    SUSPICIOUS_LINKS = "Enlaces sospechosos o maliciosos"
+    FALSE_URGENCY = "Urgencia o presion manipulativa"
+    MALICIOUS_ATTACHMENT = "Adjunto potencialmente peligroso"
+    NONE = "Ninguna amenaza detectada"
 
 # ==========================================
 # 2. CONTRATOS DE DATOS DE AGENTES (PYDANTIC)
@@ -220,21 +231,35 @@ class MailClassification(BaseModel):
 
 class SecurityAnalysis(BaseModel):
     is_suspicious: bool = Field(
-        description="Establecer en True si el correo muestra patrones claros de phishing, " \
-        "fraude, ingeniería social o spam altamente sospechoso."
+        description="True si el correo presenta cualquier indicio o señal de riesgo de seguridad."
     )
     risk_level: RiskLevel = Field(
-        description="Nivel de riesgo de seguridad estimado para el correo."
+        description="Nivel de riesgo global estimado (LOW, MEDIUM, HIGH)."
     )
-    justification: str = Field(
-        description="Explicación detallada de los factores semánticos o técnicos que determinaron " \
-        "el nivel de riesgo."
+    threat_types: list[ThreatType] = Field(
+        default_factory=list,
+        description="Lista de tipos específicos de amenazas detectadas. " \
+        "Si no hay amenazas, devolver lista vacía o [NONE]."
+    )
+    suspicious_links: list[str] = Field(
+        default_factory=list,
+        description="Lista de URLs o dominios dudosos o con mala reputación " \
+        "identificados en el correo."
+    )
+    suspicious_indicators: list[str] = Field(
+        default_factory=list,
+        description="Frases, evidencias o señales textuales puntuales que " \
+        "justifican la sospecha."
+    )
+    reasoning: str = Field(
+        description="Explicación clara y concisa orientada al usuario sobre " \
+        "el análisis de seguridad."
     )
 
 class TaskItem(BaseModel):
     task_id: str = Field(
-        description="Identificador correlativo temporal generado por el modelo para la tarea "
-        "(ej. task_1, task_2)."
+        description="Identificador correlativo temporal generado por el modelo " \
+        "para la tarea (ej. task_1, task_2)."
     )
     task_title: str = Field(
         description="Título corto (una línea) para mostrar en un checklist visual."
@@ -251,7 +276,7 @@ class TaskItem(BaseModel):
         default=None,
         description="Fecha límite explícita o inferida textualmente en el correo (formato YYYY-MM-DD). Si no se menciona, dejar en None."
     )
-    task_requires_response: str = Field(
+    task_requires_response: bool = Field(
         description="Indica si la tarea implica responder un correo."
     )
     task_reasoning: str = Field(
@@ -259,8 +284,8 @@ class TaskItem(BaseModel):
     )
 
 class TaskExtraction(BaseModel):
-    has_task: bool = Field(
-        "Indicador de si se encontraron tareas. True si se encontraron tareas, " \
+    has_tasks: bool = Field(
+        description="Indicador de si se encontraron tareas. True si se encontraron tareas, " \
         "False en caso contrario"
     )
     tasks: List[TaskItem] = Field(

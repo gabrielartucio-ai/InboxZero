@@ -83,7 +83,7 @@ Reglas para completar TaskItem:
 
 - task_id es un string que debes generar en forma secuencial: task_1, task_2, task_3 ..., 
   uno para cada tarea identificada
-- task_titlle debe ser un título corto (una línea) para mostrar en un checklist visual.
+- task_title debe ser un título corto (una línea) para mostrar en un checklist visual.
 - task_description debe contener una explicación detallada de la acción a realizar.
 - task_assigned_to es el responsable de la tarea cuando se pueda determinar.
 - task_due_date es la Fecha límite asociada a la tarea, cuando exista esa fecha.
@@ -119,7 +119,6 @@ def build_extractor_system_prompt() -> str:
         get_agent_identity_prompt(),
         get_tasks_definitions_prompt(),
         get_response_required_prompt(),
-        get_requires_action_rules_prompt(),
         get_requires_action_rules_prompt(),
         get_output_rules_prompt()
     ]

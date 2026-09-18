@@ -3,6 +3,7 @@ from connectors.exchange_service import ExchangeService
 from services.logging_service import LoggingService
 from services.preprocessor_service import PreprocessorService
 from agents.classification.classification_agent import ClassificationAgent
+from agents.task_extraction.task_extraction_agent import TaskExtractionAgent
 
 LoggingService.configure()
 
@@ -20,4 +21,7 @@ for email in recent_emails:
 for email in clean_emails_list:
     clasificador = ClassificationAgent(config)
     mail_clasificado = clasificador.email_classificator(email)
-#    print(type(mail_clasificado))
+    print(f"tipo del  objeto 'mail_clasificado': {type(mail_clasificado)}")
+    extractor_de_tareas = TaskExtractionAgent(config)
+    tareas = extractor_de_tareas.email_extractor(email)
+    print(f"tipo del objeto 'tareas': {type(tareas)}")
