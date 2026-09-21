@@ -80,6 +80,7 @@ def build_security_analysis_system_prompt() -> str:
     """
     sections = [
         get_agent_identity_prompt(),
+        get_risk_criteria_prompt(),
         get_output_rules_prompt()
     ]
 
