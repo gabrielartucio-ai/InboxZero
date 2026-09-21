@@ -4,6 +4,7 @@ from services.logging_service import LoggingService
 from services.preprocessor_service import PreprocessorService
 from agents.classification.classification_agent import ClassificationAgent
 from agents.task_extraction.task_extraction_agent import TaskExtractionAgent
+from agents.security_analysis.security_analysis_agent import SecurityAnalysisAgent
 
 LoggingService.configure()
 
@@ -25,3 +26,6 @@ for email in clean_emails_list:
     extractor_de_tareas = TaskExtractionAgent(config)
     tareas = extractor_de_tareas.email_extractor(email)
     print(f"tipo del objeto 'tareas': {type(tareas)}")
+    analizador_de_riesgo = SecurityAnalysisAgent(config)
+    riesgo = analizador_de_riesgo.email_security_analyzer(email)
+    print(f"tipo del objeto 'riesgo': {type(riesgo)}")

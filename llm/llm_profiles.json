@@ -30,7 +30,7 @@
         "classification_agent": {
             "profile": "fast_low_cost_llm"
         },
-        "security_agent": {
+        "security_analysis_agent": {
             "profile": "local_private_llm"
         },
         "task_extraction_agent": {
