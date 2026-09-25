@@ -1,0 +1,51 @@
+[
+  {
+    "rule_id": "sys-archive-known-newsletter",
+    "name": "Archivar newsletters",
+    "description": "Archiva automáticamente correos clasificados como newsletter cuando el análisis de seguridad determinó un riesgo bajo.",
+    "conditions": [
+      { "field": "category", "operator": "equals", "value": "newsletter" },
+      { "field": "risk_level", "operator": "equals", "value": "low" }
+    ],
+    "condition_logic": "AND",
+    "action": "archive",
+    "action_parameters": {},
+    "priority": 10
+  },
+  {
+    "rule_id": "sys-flag-high-risk",
+    "name": "Marcar para revisión los correos de riesgo alto",
+    "description": "Marca como importante cualquier correo cuyo análisis de seguridad haya determinado un riesgo alto, para que el usuario lo revise manualmente antes de cualquier acción automática.",
+    "conditions": [
+      { "field": "risk_level", "operator": "equals", "value": "high" }
+    ],
+    "condition_logic": "AND",
+    "action": "mark_as_important",
+    "action_parameters": {},
+    "priority": 5
+  },
+  {
+    "rule_id": "sys-followup-detected-tasks",
+    "name": "Seguimiento cuando hay tareas detectadas",
+    "description": "Marca para seguimiento los correos en los que TaskExtractionAgent detectó al menos una tarea, compromiso o fecha límite.",
+    "conditions": [
+      { "field": "has_tasks", "operator": "equals", "value": true }
+    ],
+    "condition_logic": "AND",
+    "action": "flag_for_followup",
+    "action_parameters": {},
+    "priority": 20
+  },
+  {
+    "rule_id": "sys-highlight-high-urgency",
+    "name": "Destacar correos de urgencia alta",
+    "description": "Destaca como importante los correos que ClassificationAgent clasificó con urgencia alta, para que aparezcan priorizados en la bandeja.",
+    "conditions": [
+      { "field": "urgency", "operator": "equals", "value": "high" }
+    ],
+    "condition_logic": "AND",
+    "action": "mark_as_important",
+    "action_parameters": {},
+    "priority": 20
+  }
+]
